@@ -4,8 +4,8 @@
 [protocol]
 	version = 2
 [user]
-	name = Peter Thesling
-	email = peter.thesling@shopify.com
+	name = Keith Radford
+	email = keith.radford@shopify.com
 [url "https://github.com/Shopify/"]
 	insteadOf = git@github.com:Shopify/
 	insteadOf = git@github.com:shopify/
@@ -19,7 +19,7 @@
   co = checkout
 [core]
 	commitGraph = true
-	attributesfile = /Users/peterthesling/.gitattributes
+	attributesfile = /Users/keith/.gitattributes
 [gc]
 	writeCommitGraph = true
 [help]
