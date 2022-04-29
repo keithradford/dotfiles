@@ -134,10 +134,27 @@ Plug 'pedrohdz/vim-yaml-folds'
 
 " }}}
 
+" JS and React {{{
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'w0rp/ale'
+Plug 'peitalin/vim-jsx-typescript'
+" }}}
+
 call plug#end()
 " }}}
 
 " Editing mechanics {{{
+
+let g:ale_fixers = {
+ \ 'javascript': ['eslint']
+ \ }
+
+
+let g:ale_sign_error = '❌'
+let g:ale_sign_warning = '⚠️'
+
+let g:ale_fix_on_save = 1
 
 set backspace=eol,start,indent " Let backspace wrap
 set whichwrap+=<,>,h,l         " Let movement wrap

@@ -70,8 +70,6 @@ if [ -f /usr/bin/batcat ]; then
   ln -s /usr/bin/batcat ~/.local/bin/bat
 fi
 
-install hub
-
 # Neovim
 if command -v apt-get &> /dev/null; then
   # Uninstall any old version of neovim which was installed from the wrong
@@ -96,11 +94,5 @@ curl -fLso ~/.vim/autoload/plug.vim --create-dirs \
 nvim --headless +PlugInstall +qall
 echo --- neovim configured
 echo
-
-if [[ $SPIN ]]; then
-  git config --global user.email "peter.thesling@shopify.com"
-  git config --global user.name "Peter Thesling"
-  git config --global --unset-all credential.helper
-fi
 
 rm -f ~/setup-in-progress
