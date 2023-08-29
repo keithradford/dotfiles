@@ -67,6 +67,7 @@ Plug 'github/copilot.vim'
 " }}}
 
 " {{{ Language Support
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Assembly {{{
 Plug 'nviennot/vim-armasm'
@@ -137,7 +138,6 @@ Plug 'pedrohdz/vim-yaml-folds'
 
 " JS and React {{{
 Plug 'pangloss/vim-javascript'
-Plug 'leafgarland/typescript-vim'
 Plug 'w0rp/ale'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'prettier/vim-prettier', {
