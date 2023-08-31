@@ -1,23 +1,13 @@
-[diff]
-	algorithm = patience
-	noprefix = true
-[protocol]
-	version = 2
 [user]
 	name = Keith Radford
-	email = khr8771@gmail.com
+	email = keith.radford@thescore.com
+	signingkey = 8F8A4560ACC4EE5C
 [alias]
-  lg = !"git lg-specific --all"
   st = status
   ci = commit
   br = branch
   co = checkout
-[core]
-	commitGraph = true
-	attributesfile = /Users/keithradford/.gitattributes
-[gc]
-	writeCommitGraph = true
-[help]
-	autoCorrect = -1
-[credential]
-	helper = store --file /opt/dev/var/private/git_credential_store
+[gpg]
+	program = gpg
+[commit]
+	gpgsign = true

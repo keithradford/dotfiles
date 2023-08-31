@@ -79,7 +79,7 @@ Plug 'rhysd/vim-crystal'
 
 " CSS {{{
 Plug 'hail2u/vim-css3-syntax'
-" Plug 'gko/vim-coloresque' " Highlight colors like #009bf9
+Plug 'gko/vim-coloresque' " Highlight colors like #009bf9
 " }}}
 
 " Elixir {{{
@@ -143,6 +143,16 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install --frozen-lockfile --production',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+Plug 'HerringtonDarkholme/yats.vim' " TS syntax highlighter
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' } " for styled or css syntax in js/ts files
+" }}}
+
+" HTML and CSS {{{
+Plug 'mattn/emmet-vim' " expand abbreviations to html/css
+" }}}
+
+" GraphQL {{{
+Plug 'jparise/vim-graphql' " graphql syntax highlighter
 " }}}
 
 " LaTeX {{{
