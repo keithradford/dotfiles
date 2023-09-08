@@ -140,11 +140,11 @@ Plug 'pedrohdz/vim-yaml-folds'
 Plug 'pangloss/vim-javascript'
 Plug 'w0rp/ale'
 Plug 'peitalin/vim-jsx-typescript'
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'npm install --frozen-lockfile --production',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
 Plug 'HerringtonDarkholme/yats.vim' " TS syntax highlighter
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' } " for styled or css syntax in js/ts files
+Plug 'alvan/vim-closetag'
+Plug 'lukas-reineke/indent-blankline.nvim'
 " }}}
 
 " HTML and CSS {{{
