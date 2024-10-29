@@ -1,13 +1,8 @@
 [user]
 	name = Keith Radford
-	email = keith.radford@thescore.com
-	signingkey = 8F8A4560ACC4EE5C
+	email = keith.radford@shopify.com
 [alias]
   st = status
   ci = commit
   br = branch
   co = checkout
-[gpg]
-	program = gpg
-[commit]
-	gpgsign = true
