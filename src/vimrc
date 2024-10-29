@@ -47,7 +47,7 @@ Plug 'vim-airline/vim-airline-themes'
 " }}}
 
 " {{{ IDE-Like Behavior
-  Plug 'tpope/vim-fugitive'             " Git
+Plug 'tpope/vim-fugitive'             " Git
 Plug 'ThePrimeagen/git-worktree.nvim'
 Plug 'tpope/vim-rhubarb'                " GitHub
 Plug 'rizzatti/dash.vim'                " Open the docs
@@ -333,7 +333,7 @@ configs.rubocop = {
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "sorbet", "rust_analyzer", "tsserver", "rubocop" }
+local servers = { "sorbet", "rust_analyzer", "rubocop" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
