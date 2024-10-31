@@ -6,3 +6,5 @@
   ci = commit
   br = branch
   co = checkout
+[include]
+	path = /Users/keith/.config/dev/gitconfig

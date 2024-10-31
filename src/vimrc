@@ -3,128 +3,95 @@ let g:mapleader = ","
 nmap <leader>v :split ~/.vimrc<CR>
 au BufRead $MYVIMRC set foldmethod=marker
 
-" {{{ Plugins
+" Plugins
 set nocompatible
+set number
+set relativenumber
+
 call plug#begin('~/.vim/plugged')
 
-" {{{ Editing Mechanics
-Plug 'tpope/vim-repeat'                " Fix repeating for plugin commands
-Plug 'tpope/vim-unimpaired'            " Pairwise commands [b
-Plug 'machakann/vim-sandwich'          " More vim-like vim-surround?
-Plug 'tpope/vim-dispatch'              " Run background processes in tmux tabs
-Plug 'tpope/vim-commentary'            " Toggle comments
-Plug 'vim-scripts/ReplaceWithRegister' " Atomic replace text object
-Plug 'christoomey/vim-sort-motion'     " Sort a text object
-Plug 'Raimondi/delimitMate'            " Automatically insert matching brackets
-Plug 'tpope/vim-endwise'               " Automatically insert end
-Plug 'tommcdo/vim-lion'                " Align comments etc with gl#
-Plug 'tpope/vim-abolish'               " :%Subvert/facilit{y,ies}/building{,s}/g
-Plug 'tpope/vim-speeddating'           " <C-A> and <C-X> for dates
-Plug 'icatalina/vim-case-change'       " Makes ~ cycle through camel, snake case
-Plug 'AndrewRadev/splitjoin.vim'       " gS -- transform to multiline; gJ -- transform to oneliner
-Plug 'hrsh7th/vim-vsnip'               " Needed to fix <tab> in insert mode
+" Editing Mechanics
+Plug 'machakann/vim-sandwich'            " More vim-like vim-surround?
+Plug 'tpope/vim-dispatch'                " Run background processes in tmux tabs
+Plug 'tpope/vim-commentary'              " Toggle comments (gc to comment, gcc to uncomment)
+Plug 'Raimondi/delimitMate'              " Automatically insert matching brackets
+Plug 'tpope/vim-endwise'                 " Automatically insert end
+Plug 'tommcdo/vim-lion'                  " Align comments etc with gl#
+Plug 'tpope/vim-speeddating'             " <C-A> and <C-X> for dates
+Plug 'icatalina/vim-case-change'         " Makes ~ cycle through camel, snake case
+Plug 'AndrewRadev/splitjoin.vim'         " gS -- transform to multiline; gJ -- transform to oneliner
+Plug 'hrsh7th/vim-vsnip'                 " Needed to fix <tab> in insert mode
 
-Plug 'kana/vim-textobj-user'
-Plug 'fvictorio/vim-textobj-backticks' " i`
-Plug 'kana/vim-textobj-diff'           " idh -- diff section
-Plug 'kana/vim-textobj-entire'         " ie -- entire document
-Plug 'kana/vim-textobj-indent'         " ii -- area of common indent
-Plug 'kana/vim-textobj-line'           " il
-Plug 'machakann/vim-textobj-delimited' " id -- each delimited part of a camel/snake/kabob-case word
-Plug 'reedes/vim-textobj-quote'        " iq -- curly quotes.
-Plug 'tek/vim-textobj-ruby'            " if(unction), c(lass), and r for a block. an for a Scoped::Name
-Plug 'whatyouhide/vim-textobj-xmlattr' " ix
-" }}}
-
-" {{{ UI Enhancements
+" UI Enhancements
 Plug 'rubik/vim-base16-paraiso'
 Plug 'arzg/vim-colors-xcode'
 Plug 'morhetz/gruvbox'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
-Plug 'airblade/vim-gitgutter'          " Diff markers in the gutter
-Plug 'bling/vim-airline'               " Status
+Plug 'airblade/vim-gitgutter'            " Diff markers in the gutter
+Plug 'bling/vim-airline'                 " Status
 Plug 'vim-airline/vim-airline-themes'
-" }}}
 
-" {{{ IDE-Like Behavior
-Plug 'tpope/vim-fugitive'             " Git
-Plug 'ThePrimeagen/git-worktree.nvim'
-Plug 'tpope/vim-rhubarb'                " GitHub
-Plug 'rizzatti/dash.vim'                " Open the docs
-Plug 'tpope/vim-projectionist'          " :Econtroller user
+" IDE-Like Behavior
+Plug 'tpope/vim-fugitive'                " Git
+Plug 'tpope/vim-rhubarb'                 " GitHub
+Plug 'rizzatti/dash.vim'                 " Open the docs
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'ojroques/nvim-lspfuzzy'
-Plug 'hrsh7th/nvim-compe'
-Plug 'ntpeters/vim-better-whitespace' " Highlight trailing whitespace
-Plug 'vim-scripts/Rename'
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'ntpeters/vim-better-whitespace'    " Highlight trailing whitespace
 Plug 'christoomey/vim-tmux-navigator'
 if executable('shadowenv')
   Plug 'Shopify/shadowenv.vim'
 endif
 Plug 'vim-test/vim-test'
 Plug 'frazrepo/vim-rainbow'
-" }}}
+Plug 'github/copilot.vim'
 
-" {{{ Language Support
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" Javascript etc. {{{
-Plug 'othree/yajs.vim'
-Plug 'othree/es.next.syntax.vim'
-Plug 'Quramy/vim-js-pretty-template'
-Plug 'HerringtonDarkholme/yats.vim'
-Plug 'posva/vim-vue'
-Plug 'kchmck/vim-coffee-script'
-" }}}
-
-" Markdown {{{
+" Markdown
 Plug 'plasticboy/vim-markdown'
-" }}}
 
-" Ruby {{{
+" Ruby
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-bundler'
 Plug 'thoughtbot/vim-rspec'
 Plug 'noprompt/vim-yardoc'
-" }}}
 
-" YAML {{{
+" YAML
 Plug 'stephpy/vim-yaml'
 Plug 'pedrohdz/vim-yaml-folds'
-" }}}
 
-" JS and React {{{
+" JS and React
 Plug 'pangloss/vim-javascript'
 Plug 'dense-analysis/ale'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'HerringtonDarkholme/yats.vim' " TS syntax highlighter
 Plug 'alvan/vim-closetag'
 Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'Galooshi/vim-import-js'
 Plug 'mxw/vim-jsx'
-" }}}
+Plug 'othree/yajs.vim'
+Plug 'othree/es.next.syntax.vim'
+Plug 'Quramy/vim-js-pretty-template'
+Plug 'HerringtonDarkholme/yats.vim'
 
-" HTML and CSS {{{
-Plug 'mattn/emmet-vim' " expand abbreviations to html/css
+" HTML and CSS
+Plug 'mattn/emmet-vim'              " expand abbreviations to html/css
 Plug 'hail2u/vim-css3-syntax'
-Plug 'gko/vim-coloresque' " Highlight colors like #009bf9
-" }}}
+Plug 'gko/vim-coloresque'           " Highlight colors like #009bf9
 
-" GraphQL {{{
-Plug 'jparise/vim-graphql' " graphql syntax highlighter
-" }}}
-
-" LaTeX {{{
-Plug 'lervag/vimtex'
-" }}}
+" GraphQL
+Plug 'jparise/vim-graphql'          " graphql syntax highlighter
 
 call plug#end()
-" }}}
-
-" Editing mechanics {{{
 
 let g:ale_fixers = {
  \ '*': ['remove_trailing_lines', 'trim_whitespace'],
@@ -134,12 +101,9 @@ let g:ale_fixers = {
  \ 'javascriptreact': ['eslint', 'prettier'],
  \ }
 
-
-
 let g:ale_sign_error = '❌'
 let g:ale_sign_warning = '⚠️'
 let g:ale_fix_on_save = 1
-0
 set backspace=eol,start,indent " Let backspace wrap
 set whichwrap+=<,>,h,l         " Let movement wrap
 set expandtab                  " Use spaces instead of tabs
@@ -149,12 +113,8 @@ set tabstop=2                  " "
 set ai                         " Auto indent
 set si                         " Smart indent
 set wrap                       " Wrap lines
-set tw=80 " Limit line length
-set lbr " Soft wrap at word boundaries
-
-" Smashing escape mapping
-inoremap jk <Esc>
-inoremap kj <Esc>
+set tw=80                      " Limit line length
+set lbr                        " Soft wrap at word boundaries
 
 " Indenting that keeps visuals selected
 vnoremap < <gv
@@ -181,10 +141,8 @@ let NERDSpaceDelims = 1
 
 map g" <Plug>ReplaceWithCurly
 
-" }}}
 
-" UI enhancements {{{
-
+" UI enhancements
 syntax enable
 
 set nu           " Show line number
@@ -218,23 +176,11 @@ let g:airline_theme = 'lucius' " 'lucius' is a good general-purpose theme
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#branch#enabled= 1
-" let g:airline_left_sep = '▙▖'
-" let g:airline_right_sep = '▗▟'
-" let g:airline_symbols.linenr = '␤'
-" let g:airline_symbols.branch = '⎇'
-" let g:airline_symbols.paste = 'ρ'
-" let g:airline_symbols.whitespace = 'Ξ'
-
-nmap <silent> [t :tabprevious<cr>
-nmap <silent> ]t :tabnext<cr>
 
 " For easy replacement of HTML tags
 nmap srt <Plug>(operator-sandwich-replace)<Plug>(textobj-sandwich-query-a)tt
 
-" }}}
-
-" IDE-like behavior {{{
-
+" IDE-like behavior
 set ignorecase              " Ignore case when searching
 set hlsearch                " Highlight search results
 set incsearch               " Search as I type
@@ -279,6 +225,7 @@ try
      \ if line("'\"") > 0 && line("'\"") <= line("$") |
      \   exe "normal! g`\"" |
      \ endif
+
 "Remember info about open buffers on close
 set viminfo^=%
 
@@ -362,23 +309,7 @@ require('lspfuzzy').setup {
 EOF
 
 
-" Compe
-set completeopt=menuone,noselect
-
 lua <<EOF
-require'compe'.setup {
-  source = {
-    path = true;
-    buffer = true;
-    calc = true;
-    nvim_lsp = true;
-    nvim_lua = true;
-    vsnip = true;
-    ultisnips = true;
-    luasnip = true;
-  };
-}
-
 local t = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
@@ -391,32 +322,6 @@ end
 -- Use (s-)tab to:
 --- move to prev/next item in completion menuone
 --- jump to prev/next snippet's placeholder
-_G.tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-n>"
-  elseif vim.fn['vsnip#available'](1) == 1 then
-    return t "<Plug>(vsnip-expand-or-jump)"
-  elseif check_back_space() then
-    return t "<Tab>"
-  else
-    return vim.fn['compe#complete']()
-  end
-end
-_G.s_tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-p>"
-  elseif vim.fn['vsnip#jumpable'](-1) == 1 then
-    return t "<Plug>(vsnip-jump-prev)"
-  else
-    -- If <S-Tab> is not working in your terminal, change it to <C-h>
-    return t "<S-Tab>"
-  end
-end
-
-vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 EOF
 
 " Fzf
@@ -472,19 +377,7 @@ nmap <silent> <leader>tl :TestLast<CR>
 nmap <silent> <leader>tg :TestVisit<CR>
 let test#strategy = "dispatch"
 
-" }}}
-
-" Language support {{{
-
-" Assembly {{{
-au BufRead,BufNewFile *.asm let asmsyntax='armasm'|let filetype_inc='armasm'
-" }}}
-
-" HAML {{{
-au FileType haml setlocal iskeyword-=.
-" }}}
-
-" HTML {{{
+" HTML
 let g:closetag_filenames = '*.html,*.xhtml,*.jsx,*.tsx'
 let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.tsx'
 let g:closetag_filetypes = 'html,js'
@@ -496,24 +389,14 @@ let g:closetag_regions = {
   \ }
 let g:closetag_shortcut = '>'
 au FileType eruby,html,xhtml let b:delimitMate_matchpairs = "(:),[:],{:}"
-" }}}
 
-" Javascript etc. {{{
+" Javascript etc.
 let g:jsx_ext_required = 0
 
 au FileType javascript set foldmethod=syntax
 au FileType javascript let b:delimitMate_quotes = "\"'`"
 
-let g:vue_disable_pre_processors=1 " It's way slow otherwise
-" }}}
-
-" LaTeX {{{
-au FileType tex nnoremap <leader>ll :!lualatex %<cr>
-au FileType tex nnoremap <leader>lb :!lualatex %:r; biber %:r; lualatex %:r;<cr>
-au FileType tex nnoremap <leader>lv :!open %:r.pdf<cr>
-" }}}
-
-" Markdown {{{
+" Markdown
 let g:vim_markdown_toc_autofit = 1
 let g:vim_markdown_folding_level = 6
 let g:vim_markdown_frontmatter = 1
@@ -525,13 +408,8 @@ let g:vim_markdown_fenced_languages = [
 \ 'tsx=typescript']
 au FileType markdown setlocal formatoptions=twacq spell
 autocmd FileType markdown call textobj#quote#init()
-" }}}
 
-" Mail {{{
-au FileType mail setlocal textwidth=80 formatoptions=twacq spell nolist bg=light
-" }}}
-
-" Ruby {{{
+" Ruby
 au FileType ruby setlocal iskeyword-=.
 
 let g:rails_projections = {
@@ -565,93 +443,12 @@ augroup format_ruby
   autocmd Syntax ruby hi def link sorbetSig Comment
 augroup END
 
-
 let g:splitjoin_trailing_comma = 1
 let g:splitjoin_ruby_hanging_args = 0
 let g:splitjoin_ruby_curly_braces = 0
 let g:splitjoin_ruby_options_as_arguments = 1
 
-" }}}
-
-" {{{ Rust
-au FileType rust setlocal colorcolumn=100
-" }}}
-
-" {{{
-" This is necessary for VimTeX to load properly. The "indent" is optional.
-" Note that most plugin managers will do this automatically.
-filetype plugin indent on
-
-" This enables Vim's and neovim's syntax-related features. Without this, some
-" VimTeX features will not work (see ":help vimtex-requirements" for more
-" info).
-syntax enable
-
-" Viewer options: One may configure the viewer either by specifying a built-in
-" viewer method:
-let g:vimtex_view_method = 'zathura'
-
-" Or with a generic interface:
-let g:vimtex_view_general_viewer = 'okular'
-let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
-
-" VimTeX uses latexmk as the default compiler backend. If you use it, which is
-" strongly recommended, you probably don't need to configure anything. If you
-" want another compiler backend, you can change it as follows. The list of
-" supported backends and further explanation is provided in the documentation,
-" see ":help vimtex-compiler".
-let g:vimtex_compiler_method = 'latexrun'
-
-" Most VimTeX mappings rely on localleader and this can be changed with the
-" following line. The default is usually fine and is the symbol "\".
-let maplocalleader = ","
-" }}}
-
-" {{{ Zettelkasten
-function! SNote(...)
-  let path = strftime("%Y%m%d%H%M")." ".trim(join(a:000)).".md"
-  execute ":sp " . fnameescape(path)
-endfunction
-command! -nargs=* SNote call SNote(<f-args>)
-
-function! Note(...)
-  let path = strftime("%Y%m%d%H%M")." ".trim(join(a:000)).".md"
-  execute ":e " . fnameescape(path)
-endfunction
-command! -nargs=* Note call Note(<f-args>)
-
-function! ZettelkastenSetup()
-  if expand("%:t") !~ '^[0-9]\+'
-    return
-  endif
-  " syn region mkdFootnotes matchgroup=mkdDelimiter start="\[\["    end="\]\]"
-
-  inoremap <expr> <plug>(fzf-complete-path-custom) fzf#vim#complete#path("rg --files -t md \| sed 's/^/[[/g' \| sed 's/$/]]/'")
-  imap <buffer> [[ <plug>(fzf-complete-path-custom)
-
-  function! s:CompleteTagsReducer(lines)
-    if len(a:lines) == 1
-      return "#" . a:lines[0]
-    else
-      return split(a:lines[1], '\t ')[1]
-    end
-  endfunction
-
-  inoremap <expr> <plug>(fzf-complete-tags) fzf#vim#complete(fzf#wrap({
-        \ 'source': 'zkt-raw',
-        \ 'options': '--multi --ansi --nth 2 --print-query --exact --header "Enter without a selection creates new tag"',
-        \ 'reducer': function('<sid>CompleteTagsReducer')
-        \ }))
-  imap <buffer> # <plug>(fzf-complete-tags)
-endfunction
-
-autocmd BufNew,BufNewFile,BufRead ~/Documents/Zettelkasten/*.md call ZettelkastenSetup()
-" }}}
-
-" }}}
-
-" Technical details {{{
-
+" Technical details
 set encoding=utf8
 set ffs=unix,dos,mac " Use Unix as the standard file type
 set lazyredraw       " Don't redraw while executing macros (perf)
@@ -661,5 +458,3 @@ set tm=500           " Timeout
 set history=700      " Long memory
 set hidden           " CoC wants this set?
 set updatetime=300   " So CursorHold fires after a more reasonable time
-
-" }}}
