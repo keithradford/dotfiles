@@ -1,0 +1,10 @@
+[user]
+	name = Keith Radford
+	email = keith.radford@shopify.com
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  co = checkout
+[include]
+	path = /Users/keith/.config/dev/gitconfig

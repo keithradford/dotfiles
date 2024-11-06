@@ -1,0 +1,331 @@
+let mapleader = ","
+let g:mapleader = ","
+nmap <leader>v :split ~/.vimrc<CR>
+au BufRead $MYVIMRC set foldmethod=marker
+
+" Plugins
+set nocompatible
+
+call plug#begin('~/.vim/plugged')
+
+" {{{ Editing Mechanics
+Plug 'tpope/vim-dispatch'                " Run background processes in tmux tabs
+Plug 'tpope/vim-commentary'              " Toggle comments (gc to comment, gcc to uncomment)
+Plug 'Raimondi/delimitMate'              " Automatically insert matching brackets
+Plug 'tpope/vim-endwise'                 " Automatically insert end
+Plug 'tommcdo/vim-lion'                  " Align comments etc with gl#
+" Plug 'icatalina/vim-case-change'         " Makes ~ cycle through camel, snake case
+" Plug 'hrsh7th/vim-vsnip'                 " Needed to fix <tab> in insert mode
+" }}}
+
+" {{{ UI Enhancements
+Plug 'folke/tokyonight.nvim'
+Plug 'airblade/vim-gitgutter'            " Diff markers in the gutter
+Plug 'bling/vim-airline'                 " Status
+Plug 'vim-airline/vim-airline-themes'
+Plug 'ntpeters/vim-better-whitespace'    " Highlight trailing whitespace
+" }}}
+
+" {{{ IDE-Like Behavior
+Plug 'nvim-lua/plenary.nvim'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'tpope/vim-fugitive'                " Git, i.e. :Git add .
+Plug 'tpope/vim-rhubarb'                 " GitHub links, i.e. :GBrowse
+Plug 'christoomey/vim-tmux-navigator'
+if executable('shadowenv')
+  Plug 'Shopify/shadowenv.vim'
+endif
+Plug 'vim-test/vim-test'
+Plug 'github/copilot.vim'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'neovim/nvim-lspconfig'
+" }}}
+
+" {{{ Ruby
+" Plug 'vim-ruby/vim-ruby'
+" Plug 'tpope/vim-rails'
+" Plug 'tpope/vim-bundler'
+" Plug 'thoughtbot/vim-rspec'
+" Plug 'noprompt/vim-yardoc'
+" }}}
+
+" {{{ JS and React
+" Plug 'pangloss/vim-javascript'
+" Plug 'peitalin/vim-jsx-typescript'
+" Plug 'HerringtonDarkholme/yats.vim' " TS syntax highlighter
+" Plug 'alvan/vim-closetag'
+" Plug 'lukas-reineke/indent-blankline.nvim'
+" Plug 'mxw/vim-jsx'
+" Plug 'othree/yajs.vim'
+" Plug 'othree/es.next.syntax.vim'
+" Plug 'Quramy/vim-js-pretty-template'
+" Plug 'HerringtonDarkholme/yats.vim'
+" }}}
+
+call plug#end()
+
+set termguicolors
+
+let g:tokyonight_style = 'night' " available: night, storm
+let g:tokyonight_enable_italic = 1
+
+colorscheme tokyonight
+let g:airline_theme = "lucius"
+
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#branch#enabled= 1
+
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number -- '.fzf#shellescape(<q-args>),
+  \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+
+" Searching!
+nmap <silent> <c-p> :GFiles<CR>
+nmap <silent> <c-t> :Buffers<CR>
+nmap <silent> <c-f> :GGrep<CR>
+
+lua << EOF
+  require'nvim-treesitter.configs'.setup {
+    ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "ruby", "javascript", "typescript" },
+    sync_install = false,
+    auto_install = true,
+    highlight = {
+      enable = true,
+      additional_vim_regex_highlighting = false,
+    },
+  }
+EOF
+
+lua << EOF
+  require("mason").setup()
+
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  local mason_lspconfig = require("mason-lspconfig")
+  local servers = {
+    ruby_lsp = {},
+    ts_ls = {
+      filetypes = { "typescript", "typescriptreact" },
+    },
+    sorbet = {
+      filetypes = { "ruby" },
+    },
+  }
+
+  mason_lspconfig.setup {
+    ensure_installed = vim.tbl_keys(servers),
+  }
+
+  local on_attach = function(client, bufnr)
+    -- Key mappings
+    local opts = { noremap = true, silent = true }
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts) -- Go to Definition
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts) -- Go to References
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts) -- Hover
+  end
+
+  mason_lspconfig.setup_handlers {
+    function(server_name)
+      require("lspconfig")[server_name].setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = servers[server_name],
+        filetypes = (servers[server_name] or {}).filetypes,
+      }
+    end
+  }
+EOF
+
+set backspace=eol,start,indent " Let backspace wrap
+set whichwrap+=<,>,h,l         " Let movement wrap
+set expandtab                  " Use spaces instead of tabs
+set smarttab                   " Be smart when using tabs ;)
+set shiftwidth=2               " Tab width
+set tabstop=2                  " "
+set ai                         " Auto indent
+set si                         " Smart indent
+set wrap                       " Wrap lines
+set tw=80                      " Limit line length
+set lbr                        " Soft wrap at word boundaries
+
+" Indenting that keeps visuals selected
+vnoremap < <gv
+vnoremap > >gv
+
+" Fast save
+nmap <leader>w :w!<cr>
+
+" Treat long lines as break lines (useful when moving around in them)
+map j gj
+map k gk
+
+" Don’t open folds when using { and } to move
+set foldopen-=block
+
+" Automatically open all folds when opening a file
+autocmd BufWinEnter * let &foldlevel = max(map(range(1, line('$')), 'foldlevel(v:val)'))
+
+" DelimitMate plugin which auto closes brackets (
+let delimitMate_expand_cr = 1
+let delimitMate_expand_space = 1
+
+let NERDSpaceDelims = 1
+
+" UI enhancements
+syntax enable
+
+set nu           " Show line number
+set so=7         " Pad the edge of the screen
+set cmdheight=2  " Height of the command bar
+set hid          " A buffer becomes hidden when it is abandoned
+set showmatch    " Show matching brackets when text indicator is over them
+set mat=2        " How many tenths of a second to blink when matching brackets
+set laststatus=2 " Always show statusline
+set cc=121       " Show where 120 chars is
+
+" GUI Options
+if has("gui_running")
+ set guifont=IBM\ Plex\ Mono
+ set guioptions-=L
+ set guioptions-=r
+ set showtabline=0
+ let g:solarized_menu=0
+ let g:airline_powerline_fonts = 0
+endif
+
+if has('mouse_sgr')
+ set ttymouse=sgr
+endif
+
+" Better copying to clipboard
+vnoremap <leader>y "+y        " Copy selected text to clipboard
+nnoremap <leader>Y "+yy       " Copy current line to clipboard
+vnoremap <leader>p "+p        " Paste from clipboard
+nnoremap <leader>p "+p        " Paste from clipboard
+vnoremap <leader>P "+p        " Paste from clipboard and replace selected text
+nnoremap <leader>ca :%y +<CR> " Copy all to clipboard
+
+" IDE-like behavior
+set ignorecase              " Ignore case when searching
+set hlsearch                " Highlight search results
+set incsearch               " Search as I type
+set smartcase               " When searching try to be smart about cases
+set wildmenu                " Turn on the WiLd menu
+set wildignore=*.o,*~,*.pyc " Ignore compiled files
+set undofile                " Persistent history between sessions
+
+" Easier exploring
+nnoremap <leader>e :Explore<CR>
+
+" Toggle spell check
+nnoremap <silent> <leader>s :set spell!<CR>
+set spelllang=en
+
+" Clean up when <leader><cr> is pressed
+map <silent> <leader><cr> :noh<cr>:ccl<cr>:GitGutterAll<cr>
+
+set mouse=a " Mouses are useful
+
+" Smart way to move between windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" Specify the behavior when switching between buffers
+try
+ set switchbuf=useopen,usetab,newtab
+   set stal=2
+   catch
+   endtry
+   " Return to last edit position when opening files
+   autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
+
+"Remember info about open buffers on close
+set viminfo^=%
+
+" Search for current selection
+vnoremap * y/\V<C-r>=escape(@",'/\')<CR><CR>
+
+lua <<EOF
+--local t = function(str)
+--  return vim.api.nvim_replace_termcodes(str, true, true, true)
+--end
+--
+--local check_back_space = function()
+--    local col = vim.fn.col('.') - 1
+--    return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
+--end
+--
+---- Use (s-)tab to:
+----- move to prev/next item in completion menuone
+--- jump to prev/next snippet's placeholder
+EOF
+
+
+" {{{ Vim Test
+nmap <silent> <leader>tn :TestNearest<CR>
+nmap <silent> <leader>tf :TestFile<CR>
+nmap <silent> <leader>ts :TestSuite<CR>
+nmap <silent> <leader>tl :TestLast<CR>
+nmap <silent> <leader>tg :TestVisit<CR>
+let test#strategy = "dispatch"
+" }}}
+
+" {{{ Ruby
+" au FileType ruby setlocal iskeyword-=.
+
+" let g:rails_projections = {
+" \   "config/routes.rb": {
+" \     "command": "routes"},
+" \   "spec/features/*_spec.rb": {
+" \     "type": "feature",
+" \     "template": [
+" \       "require 'rails_helper'",
+" \       "",
+" \       "feature '{underscore|capitalize|blank}' do",
+" \       "",
+" \       "end" ]}}
+
+" let g:rails_gem_projections = {
+" \   "factory_bot_rails": {
+" \     "spec/factories/*.rb": {
+" \       "type": "factory",
+" \       "template": [
+" \         "FactoryBot.define do",
+" \         "  factory :{underscore} do",
+" \         "",
+" \         "  end",
+" \         "end"],
+" \       "related": "app/models/{}.rb" } } }
+
+" " Fade out sorbet signatures
+" augroup format_ruby
+"   autocmd Syntax ruby syn region sorbetSig start='sig {' end='}'
+"   autocmd Syntax ruby syn region sorbetSig start='sig do' end='end'
+"   autocmd Syntax ruby hi def link sorbetSig Comment
+" augroup END
+
+" let g:splitjoin_trailing_comma = 1
+" let g:splitjoin_ruby_hanging_args = 0
+" let g:splitjoin_ruby_curly_braces = 0
+" let g:splitjoin_ruby_options_as_arguments = 1
+" }}}
+
+" {{{ Technical details
+set encoding=utf8
+set ffs=unix,dos,mac " Use Unix as the standard file type
+set lazyredraw       " Don't redraw while executing macros (perf)
+set magic            " For regular expressions turn magic on
+set noerrorbells     " No annoying sound on errors
+set tm=500           " Timeout
+set history=700      " Long memory
+set updatetime=300   " So CursorHold fires after a more reasonable time
+" }}}
