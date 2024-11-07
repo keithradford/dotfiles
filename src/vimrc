@@ -14,8 +14,6 @@ Plug 'tpope/vim-commentary'              " Toggle comments (gc to comment, gcc t
 Plug 'Raimondi/delimitMate'              " Automatically insert matching brackets
 Plug 'tpope/vim-endwise'                 " Automatically insert end
 Plug 'tommcdo/vim-lion'                  " Align comments etc with gl#
-" Plug 'icatalina/vim-case-change'         " Makes ~ cycle through camel, snake case
-" Plug 'hrsh7th/vim-vsnip'                 " Needed to fix <tab> in insert mode
 " }}}
 
 " {{{ UI Enhancements
@@ -42,6 +40,7 @@ Plug 'github/copilot.vim'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
+Plug 'preservim/nerdtree'                 " File explorer
 " }}}
 
 " {{{ Ruby
@@ -67,6 +66,7 @@ Plug 'neovim/nvim-lspconfig'
 
 call plug#end()
 
+" Theme
 set termguicolors
 
 let g:tokyonight_style = 'night' " available: night, storm
@@ -79,16 +79,22 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#branch#enabled= 1
 
+" Searching!
 command! -bang -nargs=* GGrep
   \ call fzf#vim#grep(
   \   'git grep --line-number -- '.fzf#shellescape(<q-args>),
   \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
 
-" Searching!
 nmap <silent> <c-p> :GFiles<CR>
 nmap <silent> <c-t> :Buffers<CR>
 nmap <silent> <c-f> :GGrep<CR>
 
+" Nerdtree remaps
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
+nnoremap <C-m> :NERDTreeFind<CR>
+
+" Lua stuff
 lua << EOF
   require'nvim-treesitter.configs'.setup {
     ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "ruby", "javascript", "typescript" },
