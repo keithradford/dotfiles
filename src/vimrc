@@ -162,6 +162,10 @@ set lbr                        " Soft wrap at word boundaries
 vnoremap < <gv
 vnoremap > >gv
 
+" Move between buffers
+nnoremap <PageUp>   :bnext<CR>
+nnoremap <PageDown> :bprevious<CR>
+
 " Fast save
 nmap <leader>w :w!<cr>
 
