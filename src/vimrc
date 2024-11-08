@@ -87,7 +87,8 @@ command! -bang -nargs=* GGrep
 
 nmap <silent> <c-p> :GFiles<CR>
 nmap <silent> <c-t> :Buffers<CR>
-nmap <silent> <c-f> :GGrep<CR>
+nmap <C-_> :GGrep <CR>
+nmap <silent> <C-f> :GGrep <C-R><C-W><CR>
 
 " Nerdtree remaps
 nnoremap <leader>n :NERDTreeFocus<CR>
