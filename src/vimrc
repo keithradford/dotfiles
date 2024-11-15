@@ -48,13 +48,14 @@ Plug 'hrsh7th/cmp-path'                   " Path completions
 Plug 'hrsh7th/cmp-cmdline'                " Command line completions
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
+Plug 'preservim/vimux'
 " }}}
 
 " {{{ Ruby
 " Plug 'vim-ruby/vim-ruby'
 " Plug 'tpope/vim-rails'
 " Plug 'tpope/vim-bundler'
-" Plug 'thoughtbot/vim-rspec'
+Plug 'thoughtbot/vim-rspec'
 " Plug 'noprompt/vim-yardoc'
 " }}}
 
@@ -358,7 +359,7 @@ nmap <silent> <leader>tf :TestFile<CR>
 nmap <silent> <leader>ts :TestSuite<CR>
 nmap <silent> <leader>tl :TestLast<CR>
 nmap <silent> <leader>tg :TestVisit<CR>
-let test#strategy = "dispatch"
+let test#strategy = "vimux"
 " }}}
 
 " {{{ Ruby
