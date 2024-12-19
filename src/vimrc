@@ -117,11 +117,11 @@ lua << EOF
 EOF
 
 lua << EOF
-  vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
   require("mason").setup()
-
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
   local mason_lspconfig = require("mason-lspconfig")
+  local lspconfig = require("lspconfig")
+
+  -- Configure LSP servers
   local servers = {
     ruby_lsp = {},
     ts_ls = {
@@ -137,22 +137,20 @@ lua << EOF
   }
 
   local on_attach = function(client, bufnr)
-    -- Key mappings
     local opts = { noremap = true, silent = true }
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts) -- Go to Definition
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts) -- Go to References
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts) -- Hover
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
   end
 
   mason_lspconfig.setup_handlers {
     function(server_name)
-      require("lspconfig")[server_name].setup {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        settings = servers[server_name],
-        filetypes = (servers[server_name] or {}).filetypes,
-      }
-    end
+      local server_config = servers[server_name] or {}
+      server_config.capabilities = vim.lsp.protocol.make_client_capabilities()
+      server_config.on_attach = on_attach
+
+      lspconfig[server_name].setup(server_config)
+    end,
   }
 EOF
 
@@ -204,19 +202,6 @@ lua <<EOF
     }),
     matching = { disallow_symbol_nonprefix_matching = false }
   })
-
-   -- Configure LSP for TypeScript (tsserver)
-  require('lspconfig')['ts_ls'].setup {
-      capabilities = require('cmp_nvim_lsp').default_capabilities()
-  }
-  -- Configure LSP for Ruby (ruby-lsp)
-  require('lspconfig')['ruby_lsp'].setup {
-      capabilities = require('cmp_nvim_lsp').default_capabilities()
-  }
-  -- Configure LSP for Sorbet
-  require('lspconfig')['sorbet'].setup {
-      capabilities = require('cmp_nvim_lsp').default_capabilities()
-  }
 EOF
 
 set backspace=eol,start,indent " Let backspace wrap
@@ -336,22 +321,6 @@ set viminfo^=%
 
 " Search for current selection
 vnoremap * y/\V<C-r>=escape(@",'/\')<CR><CR>
-
-lua <<EOF
---local t = function(str)
---  return vim.api.nvim_replace_termcodes(str, true, true, true)
---end
---
---local check_back_space = function()
---    local col = vim.fn.col('.') - 1
---    return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
---end
---
----- Use (s-)tab to:
------ move to prev/next item in completion menuone
---- jump to prev/next snippet's placeholder
-EOF
-
 
 " {{{ Vim Test
 nmap <silent> <leader>tn :TestNearest<CR>
